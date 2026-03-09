@@ -1,4 +1,6 @@
 from typing import Any, Dict
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q, QuerySet
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, FormView, DetailView, CreateView, UpdateView, DeleteView
@@ -9,7 +11,7 @@ from routes.mixins import RouteContextMixin
 from routes.models import Route
 
 
-class RouteListView(RouteContextMixin, ModifyFormData, ListView, FormView):
+class RouteListView(LoginRequiredMixin, RouteContextMixin, ModifyFormData, ListView, FormView):
     model = Route
     template_name = 'route/routes-list.html'
     context_object_name = 'routes'
@@ -33,13 +35,15 @@ class RouteListView(RouteContextMixin, ModifyFormData, ListView, FormView):
         return queryset
 
 
-class RouteDetailsView(RouteContextMixin, DetailView):
+class RouteDetailsView(LoginRequiredMixin, PermissionRequiredMixin ,RouteContextMixin, DetailView):
+    permission_required = 'routes.view_route'
     queryset = Route.objects.prefetch_related('points_for_delivery')
     template_name = 'route/route-details.html'
 
 
 
-class RouteCreateView(RouteContextMixin, CreateView):
+class RouteCreateView(LoginRequiredMixin,PermissionRequiredMixin ,RouteContextMixin, CreateView):
+    permission_required = 'routes.add_route'
     queryset = Route.objects.prefetch_related('points_for_delivery')
     template_name = 'route/route-create.html'
     form_class = RouteAddForm
@@ -48,7 +52,8 @@ class RouteCreateView(RouteContextMixin, CreateView):
         return reverse('routes:route_details', kwargs={'pk': self.object.pk})
 
 
-class RouteUpdateView(RouteContextMixin, UpdateView):
+class RouteUpdateView(LoginRequiredMixin,PermissionRequiredMixin ,RouteContextMixin, UpdateView):
+    permission_required = 'routes.change_route'
     queryset = Route.objects.prefetch_related('points_for_delivery')
     template_name = 'route/route-update.html'
     form_class = RouteEditForm
@@ -64,7 +69,8 @@ class RouteUpdateView(RouteContextMixin, UpdateView):
         return reverse('routes:route_details', kwargs={'pk': self.object.pk})
 
 
-class RouteDeleteView(RouteContextMixin, DeleteView):
+class RouteDeleteView(LoginRequiredMixin, PermissionRequiredMixin, RouteContextMixin, DeleteView):
+    permission_required = 'routes.delete_route'
     model = Route
     template_name = 'route/route-delete.html'
     success_url = reverse_lazy('routes:routes_list')

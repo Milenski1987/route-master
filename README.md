@@ -27,14 +27,17 @@
 
 ## ✨ Features
 
-- **Driver Management** – Track driver profiles
-- **Vehicle Management** – Track a fleet of vehicles with relevant details
+- **Driver Management** – Manages driver profiles
+- **Vehicle Management** – Manages a fleet of vehicles
 - **Route Planning** – Define and manage routes, delivery points and assignments
 - **Admin Panel** – Manage all data through Django's built-in admin interface
 
 ---
 
 ## 🗂 Apps and System Overview
+
+### `accounts`
+Handles everything related to register, login and logout users
 
 ### `common`
 Contains utility functions, and any cross-app models or mixins. Other apps import from here to avoid code duplication.
@@ -91,6 +94,7 @@ The core of the application. Allows planners to create, update and delete Delive
 logistics-delivery-planner/
 │
 ├── logisticsDeliveryPlanner/   # Main Django project settings
+├── accounts/                   # Accounts management app
 ├── common/                     # Shared utilities, base models, mixins
 ├── drivers/                    # Drivers management app
 ├── vehicles/                   # Vehicles management app
@@ -188,6 +192,18 @@ Then fill in your values:
 ```bash
 python manage.py migrate
 ```
+
+Demo users created via migration:
+
+Manager<br>
+employee_id: 000001<br>
+password: manager123
+
+Driver<br>
+employee_id: 000002<br>
+password: driver123
+
+---
 
 **6. Create a superuser (optional)**
 ```bash

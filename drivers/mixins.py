@@ -6,5 +6,6 @@ class DriverContextMixin:
         context = super().get_context_data(**kwargs)
         context['title'] = 'Driver'
         context['icon'] = 'images/driver_icon.png'
+        context['back_url'] = 'driver:list'
 
         return context

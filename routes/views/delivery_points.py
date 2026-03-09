@@ -1,4 +1,6 @@
 from typing import Dict, Any
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q, QuerySet
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, CreateView, UpdateView, DeleteView
@@ -9,7 +11,7 @@ from routes.mixins import DeliveryPointContextMixin
 from routes.models import DeliveryPoint
 
 
-class DeliveryPointListView(DeliveryPointContextMixin,ModifyFormData ,ListView, FormView):
+class DeliveryPointListView(LoginRequiredMixin, DeliveryPointContextMixin,ModifyFormData ,ListView, FormView):
     model = DeliveryPoint
     template_name = 'delivery_point/delivery-points-list.html'
     context_object_name = 'delivery_points'
@@ -32,13 +34,15 @@ class DeliveryPointListView(DeliveryPointContextMixin,ModifyFormData ,ListView, 
         return queryset
 
 
-class DeliveryPointDetailsView(DeliveryPointContextMixin, DetailView):
+class DeliveryPointDetailsView(LoginRequiredMixin, PermissionRequiredMixin ,DeliveryPointContextMixin, DetailView):
     model = DeliveryPoint
+    permission_required = 'routes.view_deliverypoint'
     template_name = 'delivery_point/delivery-point-details.html'
     context_object_name = 'delivery_point'
 
 
-class DeliveryPointCreateView(DeliveryPointContextMixin, CreateView):
+class DeliveryPointCreateView(LoginRequiredMixin, PermissionRequiredMixin , DeliveryPointContextMixin, CreateView):
+    permission_required = 'routes.add_deliverypoint'
     model = DeliveryPoint
     form_class = DeliveryPointAddForm
     context_object_name = 'delivery_point'
@@ -48,7 +52,8 @@ class DeliveryPointCreateView(DeliveryPointContextMixin, CreateView):
         return reverse('routes:delivery_point_details', kwargs={'pk': self.object.pk})
 
 
-class DeliveryPointUpdateView(DeliveryPointContextMixin, UpdateView):
+class DeliveryPointUpdateView(LoginRequiredMixin, PermissionRequiredMixin, DeliveryPointContextMixin, UpdateView):
+    permission_required = 'routes.change_deliverypoint'
     model = DeliveryPoint
     context_object_name = 'delivery_point'
     template_name = 'delivery_point/delivery-point-update.html'
@@ -65,7 +70,8 @@ class DeliveryPointUpdateView(DeliveryPointContextMixin, UpdateView):
         return reverse('routes:delivery_point_details', kwargs={'pk': self.object.pk})
 
 
-class DeliveryPointDeleteView(DeliveryPointContextMixin, DeleteView):
+class DeliveryPointDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeliveryPointContextMixin, DeleteView):
+    permission_required = 'routes.delete_deliverypoint'
     model = DeliveryPoint
     template_name = 'delivery_point/delivery-point-delete.html'
     success_url = reverse_lazy('routes:delivery_points_list')

@@ -1,4 +1,6 @@
 from typing import Any, Dict
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q, QuerySet
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
@@ -6,11 +8,11 @@ from django.views.generic import ListView, FormView, DetailView, CreateView, Upd
 from common.forms import SearchForm
 from common.mixins import ModifyFormData
 from routes.forms.assignments import AssignmentDeleteForm, AssignmentAddForm, AssignmentEditForm
-from routes.mixins import AssignmentContextMixin
+from routes.mixins import AssignmentContextMixin, DeliveryPointContextMixin
 from routes.models import Assignment
 
 
-class AssignmentListView(AssignmentContextMixin, ModifyFormData, ListView, FormView):
+class AssignmentListView(LoginRequiredMixin, AssignmentContextMixin, ModifyFormData, ListView, FormView):
     model = Assignment
     template_name = 'assignment/assignments-list.html'
     context_object_name = 'assignments'
@@ -44,12 +46,14 @@ class AssignmentListView(AssignmentContextMixin, ModifyFormData, ListView, FormV
         return queryset.order_by(f'{"-" if status == "completed" else ""}assignment_start')
 
 
-class AssignmentDetailsView(AssignmentContextMixin, DetailView):
+class AssignmentDetailsView(LoginRequiredMixin, PermissionRequiredMixin ,AssignmentContextMixin, DetailView):
+    permission_required = 'routes.view_assignment'
     queryset = Assignment.objects.select_related('driver', 'vehicle', 'route').prefetch_related('route__points_for_delivery')
     template_name = 'assignment/assignment-details.html'
 
 
-class AssignmentCreateView(AssignmentContextMixin, CreateView):
+class AssignmentCreateView(LoginRequiredMixin, PermissionRequiredMixin ,AssignmentContextMixin, CreateView):
+    permission_required = 'routes.add_assignment'
     queryset = Assignment.objects.select_related('driver', 'vehicle', 'route').prefetch_related('route__points_for_delivery')
     template_name = 'assignment/assignment-create.html'
     form_class = AssignmentAddForm
@@ -58,7 +62,8 @@ class AssignmentCreateView(AssignmentContextMixin, CreateView):
         return reverse('routes:assignment_details', kwargs={'pk': self.object.pk})
 
 
-class AssignmentUpdateView(AssignmentContextMixin, UpdateView):
+class AssignmentUpdateView(LoginRequiredMixin, PermissionRequiredMixin ,AssignmentContextMixin, UpdateView):
+    permission_required = 'routes.change_assignment'
     queryset = Assignment.objects.select_related('driver', 'vehicle', 'route').prefetch_related('route__points_for_delivery')
     template_name = 'assignment/assignment-update.html'
     form_class = AssignmentEditForm
@@ -74,7 +79,8 @@ class AssignmentUpdateView(AssignmentContextMixin, UpdateView):
         return reverse('routes:assignment_details', kwargs={'pk': self.object.pk})
 
 
-class AssignmentDeleteView(AssignmentContextMixin, DeleteView):
+class AssignmentDeleteView(LoginRequiredMixin, PermissionRequiredMixin ,AssignmentContextMixin, DeleteView):
+    permission_required = 'routes.delete_assignment'
     model = Assignment
     template_name = 'assignment/assignment-delete.html'
     success_url = reverse_lazy('routes:assignment_list')

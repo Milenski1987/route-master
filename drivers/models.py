@@ -42,6 +42,12 @@ class Driver(models.Model):
 
     years_of_experience = models.PositiveSmallIntegerField()
 
+    specializations = models.ManyToManyField(
+        'Specialization',
+        related_name='drivers',
+        blank=True
+    )
+
     @property
     def driver_age(self):
         current_year = date.today().year
@@ -49,4 +55,15 @@ class Driver(models.Model):
 
     def __str__(self):
         return f'{self.full_name} - {self.driver_age} years old with {self.years_of_experience} years experience'
+
+class Specialization(models.Model):
+    name = models.CharField(
+        max_length=100,
+        unique=True
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
 

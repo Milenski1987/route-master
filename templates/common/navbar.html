@@ -1,11 +1,21 @@
 {% load static %}
 
-<nav class="bg-success py-2">
+{% if request.user.is_authenticated and request.user.settings.theme == 'Dark' %}
+    <nav class="bg-dark py-2">
+{% else %}
+    <nav class="bg-success py-2">
+{% endif %}
     <div class="position-relative d-flex align-items-center justify-content-center px-3">
         <div class="d-flex align-items-center flex-nowrap position-absolute start-0 ps-3">
-            <a href="{% url 'common:home' %}" class="nav-link text-black fs-3" style="font-family: 'Audiowide', sans-serif;">
-                <img width="55" src="{% static 'images/logo.svg' %}" alt="Home">  RouteMaster
-            </a>
+            {% if  request.user.is_authenticated and request.user.settings.theme == 'Dark'%}
+                <a href="{% url 'common:home' %}" class="nav-link text-light fs-3" style="font-family: 'Audiowide', sans-serif;">
+                    <img width="55" src="{% static 'images/logo.svg' %}" style="filter: brightness(0) invert(1)" alt="Home">  RouteMaster
+                </a>
+            {% else %}
+                <a href="{% url 'common:home' %}" class="nav-link text-black fs-3" style="font-family: 'Audiowide', sans-serif;">
+                    <img width="55" src="{% static 'images/logo.svg' %}" alt="Home">  RouteMaster
+                </a>
+            {% endif %}
         </div>
         <ul class="nav flex-nowrap align-items-center">
             <li class="nav-item">
@@ -29,5 +39,27 @@
                     <img width="35" class='me-1' src="{% static 'images/assignment_icon.png' %}" style="filter: brightness(0) invert(1)"  alt="Assignment"/><b>Assignments</b></a>
             </li>
         </ul>
+        <div class="position-absolute end-0 pe-3 d-flex align-items-center gap-2">
+            {% if request.user.is_authenticated %}
+                <a class="nav-link text-light fs-5 d-flex align-items-center" href="{% url 'accounts:profile' request.user.pk %}">
+{#                    <img width="35" class="me-1" src="{% static 'images/user_icon.png' %}" alt="User"/>#}
+                    <b>Profile</b>
+                </a>
+                <form method="post" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link text-light fs-5 bg-transparent border-0 d-flex align-items-center">
+                        <b>Logout</b>
+                    </button>
+                </form>
+            {% else %}
+                <a class="nav-link text-light fs-5 d-flex align-items-center" href="{% url 'accounts:register' %}">
+{#                    <img width="35" class="me-1" src="{% static 'images/user_icon.png' %}" alt="User"/>#}
+                    <b>Register</b>
+                </a>
+                <a class="nav-link text-light fs-5 d-flex align-items-center" href="{% url 'accounts:login' %}">
+                    <b>Login</b>
+                </a>
+            {% endif %}
+        </div>
     </div>
 </nav>

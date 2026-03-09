@@ -7,7 +7,7 @@ from routes.models import Route, Assignment
 from vehicles.models import Vehicle
 
 
-class HomePageView(TemplateView):
+class LoggedHomePageView(TemplateView):
     template_name = 'home-page.html'
 
 

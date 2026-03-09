@@ -1,12 +1,16 @@
+from typing import Any, Dict
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import QuerySet
-from django.views.generic import ListView, FormView, DetailView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, FormView, DetailView, UpdateView, CreateView, DeleteView
 from common.mixins import ModifyFormData
-from vehicles.forms import VehicleSearchAndSortForm
+from vehicles.forms import VehicleSearchAndSortForm, VehicleEditForm, VehicleAddForm, VehicleDeleteForm
 from vehicles.mixins import VehicleContextMixin
 from vehicles.models import Vehicle
 
 
-class VehicleListView(VehicleContextMixin,ModifyFormData ,ListView, FormView):
+class VehicleListView(LoginRequiredMixin, VehicleContextMixin,ModifyFormData ,ListView, FormView):
     model = Vehicle
     template_name = 'vehicle/vehicles-list.html'
     context_object_name = 'vehicles'
@@ -28,6 +32,49 @@ class VehicleListView(VehicleContextMixin,ModifyFormData ,ListView, FormView):
         return queryset
 
 
-class VehicleDetailView(VehicleContextMixin, DetailView):
+class VehicleDetailView(LoginRequiredMixin, PermissionRequiredMixin ,VehicleContextMixin, DetailView):
     model = Vehicle
+    permission_required = 'vehicles.view_vehicle'
     template_name = 'vehicle/vehicle-details.html'
+
+
+class VehicleCreateView(LoginRequiredMixin,PermissionRequiredMixin ,VehicleContextMixin, CreateView):
+    permission_required = 'vehicles.add_vehicle'
+    model = Vehicle
+    template_name = 'vehicle/vehicle-create.html'
+    form_class = VehicleAddForm
+
+    def get_success_url(self) -> str:
+        return reverse('vehicle:details', kwargs={'pk': self.object.pk})
+
+
+class VehicleUpdateView(LoginRequiredMixin,PermissionRequiredMixin ,VehicleContextMixin, UpdateView):
+    permission_required = 'vehicles.change_vehicle'
+    model = Vehicle
+    template_name = 'vehicle/vehicle-update.html'
+    form_class = VehicleEditForm
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['back_url'] = 'vehicle:details'
+        context['id'] = self.get_object().pk
+
+        return context
+
+    def get_success_url(self) -> str:
+        return reverse('vehicle:details', kwargs={'pk': self.object.pk})
+
+
+class VehicleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, VehicleContextMixin, DeleteView):
+    permission_required = 'vehicles.delete_vehicle'
+    model = Vehicle
+    template_name = 'vehicle/vehicle-delete.html'
+    success_url = reverse_lazy('vehicle:list')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['back_url'] = 'vehicle:details'
+        context['id'] = self.get_object().pk
+        context['form'] = VehicleDeleteForm(instance=self.object)
+
+        return context

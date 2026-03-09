@@ -1,15 +1,6 @@
-{% extends "base/base.html" %}
+{% extends "base/base-error-page.html" %}
 {% load static %}
 
-{% block content %}
-    <div class="flex-fill d-flex justify-content-center align-items-start pt-6"
-         style="background-image: url('{% static 'images/error_background.png' %}');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;">
-        <a href="{% url 'common:home' %}" class="btn btn-success rounded-5 my-5 px-3">Back to Home Page</a>
-    </div>
+{% block image %}
+    background-image: url('{% static 'images/404_background.png' %}');
 {% endblock %}
-
-
-

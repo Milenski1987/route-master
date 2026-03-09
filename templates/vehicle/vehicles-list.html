@@ -5,6 +5,11 @@
 <div class="flex-fill py-4">
     {% include 'common/filter.html' %}
     <div class="container">
+        <div class="text-center mb-3">
+            <a href="{% url 'vehicle:add' %}" class="btn btn-success border-warning-subtle rounded-5 px-5 mt-1">
+                Add Vehicle
+            </a>
+        </div>
         {% if vehicles %}
             <div class="row g-4">
                 {% for vehicle in vehicles %}

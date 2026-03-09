@@ -31,5 +31,7 @@
 </div>
 <div class="mt-4 text-center">
     <a href="{% url 'vehicle:list' %}" class="btn btn-dark rounded-5 px-5">Back</a>
+    <a href="{% url 'vehicle:edit' pk=vehicle.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
+    <a href="{% url 'vehicle:delete' pk=vehicle.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
 </div>
 {% endblock %}

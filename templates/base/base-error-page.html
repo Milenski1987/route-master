@@ -1,0 +1,15 @@
+{% extends "base/base.html" %}
+
+{% block navbar %}
+{% endblock %}
+{% block content %}
+    <div class="flex-fill d-flex justify-content-center align-items-start pt-6"
+         style="
+                {% block image %}
+                {% endblock %}
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;">
+        <a href="{% url 'common:home' %}" class="btn btn-success rounded-5 my-5 px-3">Back to Home Page</a>
+    </div>
+{% endblock %}

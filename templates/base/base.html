@@ -23,9 +23,11 @@
     </style>
 </head>
 <body class="vh-100 d-flex flex-column overflow-hidden">
-    <header class="flex-shrink-0">
-        {% include 'common/navbar.html' %}
-    </header>
+    {% block navbar %}
+        <header class="flex-shrink-0">
+            {% include 'common/navbar.html' %}
+        </header>
+    {% endblock %}
     <div class="flex-fill overflow-auto d-flex flex-column">
         <main class="flex-fill d-flex flex-column">
             {% block content %}

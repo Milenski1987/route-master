@@ -3,79 +3,84 @@
 
 {% block content %}
     <div class="border border-success border-4 rounded-5 shadow p-4 mt-4 w-auto mx-auto d-block text-center">
-        <h1 class="text-dark display-1  m-0" style="font-family: 'Audiowide', sans-serif;">
+        <h1 class="text-dark display-1 m-0" style="font-family: 'Audiowide', sans-serif;">
             RouteMaster
         </h1>
     </div>
-    <div class="container mt-5">
-        <div class="row g-4 text-center">
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow border-dark border-4 rounded-4 h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted">Assignments Completed</h6>
-                        <h2 class="fw-bold text-success">
-                            {% if assignments %}
-                                {{ assignments }}
-                            {% else %}
-                                0
-                            {% endif %}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow border-dark border-4 rounded-4 h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted">Total Distance Covered</h6>
-                        <h2 class="fw-bold text-success">
-                            {% if mileage %}
-                                {{ mileage }} km
-                            {% else %}
-                                0 km
-                            {% endif %}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow border-dark border-4 rounded-4 h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted">Top Driver</h6>
-                        {% if driver %}
-                            <h3 class="fw-bold text-success">
-                                {{ driver.full_name }}
-                            </h3>
-                            <h5 class="text-success">
-                                {{ driver.assignment_count }} courses
-                            </h5>
-                        {% else %}
+    {% if request.user.is_authenticated %}
+        <div class="container mt-5">
+            <div class="row g-4 text-center">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow {% if request.user.settings.theme == 'Dark' %} bg-dark {% endif %}border-dark border-4 rounded-4 h-100">
+                        <div class="card-body">
+                            <h6 class="{% if request.user.settings.theme == 'Dark' %} text-light {% else %} text-muted {% endif %}">Assignments Completed</h6>
                             <h2 class="fw-bold text-success">
-                                None
+                                {% if assignments %}
+                                    {{ assignments }}
+                                {% else %}
+                                    0
+                                {% endif %}
                             </h2>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow border-dark border-4 rounded-4 h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted">Top Vehicle</h6>
-                        {% if vehicle %}
-                            <h3 class="fw-bold text-success">
-                                {{ vehicle.make }} - {{ vehicle.registration_number }}
-                            </h3>
-                            <h5 class="text-success">
-                                {{ vehicle.assignment_count }} courses
-                            </h5>
-                        {% else %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow {% if request.user.settings.theme == 'Dark' %} bg-dark {% endif %}border-dark border-4 rounded-4 h-100">
+                        <div class="card-body">
+                            <h6 class="{% if request.user.settings.theme == 'Dark' %} text-light {% else %} text-muted {% endif %}">Total Distance Covered</h6>
                             <h2 class="fw-bold text-success">
-                                None
+                                {% if mileage %}
+                                    {{ mileage }} km
+                                {% else %}
+                                    0 km
+                                {% endif %}
                             </h2>
-                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow {% if request.user.settings.theme == 'Dark' %} bg-dark {% endif %}border-dark border-4 rounded-4 h-100">
+                        <div class="card-body">
+                            <h6 class="{% if request.user.settings.theme == 'Dark' %} text-light {% else %} text-muted {% endif %}">Top Driver</h6>
+                            {% if driver %}
+                                <h3 class="fw-bold text-success">{{ driver.full_name }}</h3>
+                                <h5 class="text-success">{{ driver.assignment_count }} courses</h5>
+                            {% else %}
+                                <h2 class="fw-bold text-success">None</h2>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow {% if request.user.settings.theme == 'Dark' %} bg-dark {% endif %}border-dark border-4 rounded-4 h-100">
+                        <div class="card-body">
+                            <h6 class="{% if request.user.settings.theme == 'Dark' %} text-light {% else %} text-muted {% endif %}">Top Vehicle</h6>
+                            {% if vehicle %}
+                                <h3 class="fw-bold text-success">{{ vehicle.make }} - {{ vehicle.registration_number }}</h3>
+                                <h5 class="text-success">{{ vehicle.assignment_count }} courses</h5>
+                            {% else %}
+                                <h2 class="fw-bold text-success">None</h2>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
+    {% else %}
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="rounded-5 border border-success border-4 shadow p-5 text-center position-relative overflow-hidden bg-white bg-opacity-50">
+                        <h2 class="fw-bold mb-3 fs-3" style="font-family: 'Audiowide', sans-serif;">
+                            Smart Logistics. Seamless Delivery.
+                        </h2>
+                        <p class="text-dark fs-4 mb-3" style="font-family: 'Audiowide', sans-serif;">
+                            RouteMaster is an internal logistics planning platform built for teams that move goods efficiently.
+                            Manage your drivers, vehicles, delivery points, and route assignments — all in one place.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

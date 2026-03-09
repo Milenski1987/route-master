@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card bg-warning-subtle shadow border-dark border-4 rounded-4">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle border border-dark border-4 bg-success shadow"
+                            style="width: 90px; height: 90px;">
+                            <span class="text-white fw-bold" style="font-size: 2rem; font-family: 'Audiowide', sans-serif;">
+                                {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                            </span>
+                        </div>
+                        <h3 class="fw-bold mb-0" style="font-family: 'Audiowide', sans-serif;">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </h3>
+                        <div class="mt-2 d-flex justify-content-center gap-2 flex-wrap">
+                            {% if user.is_staff %}
+                                <span class="badge bg-warning border border-dark border-2 text-dark fw-semibold px-3 py-2 rounded-3">
+                                    🔑 Staff
+                                </span>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                                <span class="badge bg-warning border border-dark border-2 text-dark fw-semibold px-3 py-2 rounded-3">
+                                    👑 Superuser
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr class="border-dark border-2">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted small text-uppercase letter-spacing-1">Employee ID</label>
+                        <div class="form-control border-dark border-2 rounded-3 bg-white fw-bold" style="font-family: 'Audiowide', sans-serif; letter-spacing: 2px;">
+                            {{ user.employee_id }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-muted small text-uppercase">First Name</label>
+                            <div class="form-control border-dark border-2 rounded-3 bg-white">
+                                {{ user.first_name }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-muted small text-uppercase">Last Name</label>
+                            <div class="form-control border-dark border-2 rounded-3 bg-white">
+                                {{ user.last_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted small text-uppercase">Email</label>
+                        <div class="form-control border-dark border-2 rounded-3 bg-white">
+                            {{ user.email }}
+                        </div>
+                    </div>
+                    <hr class="border-dark border-2">
+                    <div class="d-grid">
+                        <a href="{% url 'accounts:settings' pk=user.pk %}"
+                            class="btn btn-warning border-dark border-2 fw-bold rounded-3 py-2"
+                            style="font-family: 'Audiowide', sans-serif; letter-spacing: 1px;">
+                            ⚙️ Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

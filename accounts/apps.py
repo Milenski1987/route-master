@@ -20,6 +20,7 @@ def create_groups_and_permissions(sender, **kwargs):
         'add_assignment', 'change_assignment', 'delete_assignment', 'view_assignment',
         'add_driver', 'change_driver', 'delete_driver', 'view_driver',
         'add_vehicle', 'change_vehicle', 'delete_vehicle', 'view_vehicle',
+        'add_specialization', 'change_specialization', 'delete_specialization', 'view_specialization'
     ]
 
     driver_codenames = [
@@ -28,6 +29,7 @@ def create_groups_and_permissions(sender, **kwargs):
         'view_assignment',
         'view_driver',
         'view_vehicle',
+        'view_specialization'
     ]
 
     manager_group, _ = Group.objects.get_or_create(name='Managers')

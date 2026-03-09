@@ -28,6 +28,9 @@ VEHICLE_TYPES = ["Truck", "Van", "Car"]
 
 VEHICLE_MAKE = ["Mercedes", "Volvo", "MAN", "Scania", "DAF", "Ford"]
 
+SPECIALIZATIONS = ['Hazardous Materials (ADR)', 'Refrigerated / Cold Chain Transport', 'Oversized Load Transport',
+                   'Tanker / Liquid Transport', 'Livestock Transport', 'Medical / Pharmaceutical Transport']
+
 def generate_plate(existing):
     while True:
         region = random.choice(REGION_CODES)
@@ -95,13 +98,11 @@ def generate_data(apps, schema_editor):
     used_licenses = set()
     drivers = []
 
-    skills = []
-    for i in range(20):
-        skill = Specialization.objects.create(
-            name=f"Skill {i}",
-            description='Driver skill'
-        )
-        skills.append(skill)
+    for spec in SPECIALIZATIONS:
+        Specialization.objects.get_or_create(name=spec)
+
+    all_specs = list(Specialization.objects.all())
+
     for _ in range(30):
         birth_year = random.randint(1965, 2007)
         driver = Driver.objects.create(
@@ -112,7 +113,8 @@ def generate_data(apps, schema_editor):
             years_of_experience=random.randint(0, date.today().year - birth_year - 18),
             photo=f"https://randomuser.me/api/portraits/men/{random.randint(0, 99)}.jpg"
         )
-        driver.specializations.add(*random.sample(skills, k=random.randint(0, 5)))
+        random_specs = random.sample(all_specs, k=random.randint(0, len(all_specs)))
+        driver.specializations.set(random_specs)
         drivers.append(driver)
 
     used_plates = set()

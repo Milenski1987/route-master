@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card bg-warning-subtle shadow border-dark border-4 rounded-4">
+                <div class="card-body p-4">
+                    <h3 class="text-center fw-bold mb-1" style="font-family: 'Audiowide', sans-serif;">
+                        Settings
+                    </h3>
+                    <hr class="border-dark border-2">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted large">Theme:</label>
+                            {{ form.theme }}
+                        </div>
+                        <div class="d-flex gap-2 mt-4">
+                            <a href="{% url 'accounts:profile' pk=request.user.pk %}"
+                                class="btn btn-dark border-dark border-2 fw-bold rounded-3 py-2 flex-fill"
+                                style="font-family: 'Audiowide', sans-serif; letter-spacing: 1px;">
+                                Back
+                            </a>
+                            <button type="submit"
+                                class="btn btn-success border-dark border-2 fw-bold rounded-3 py-2 flex-fill"
+                                style="font-family: 'Audiowide', sans-serif; letter-spacing: 1px;">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

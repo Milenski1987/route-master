@@ -1,0 +1,21 @@
+{% extends "base/base-details-page.html" %}
+
+
+{% block logic %}
+<div class="mb-3 p-3 bg-white rounded-4">
+    <strong>Name:</strong>
+    <p class="mb-0 mt-1">{{ specialization.name|capfirst }}</p>
+</div>
+
+<div class="mb-3 p-3 bg-white rounded-4">
+    <strong>Description:</strong>
+    <p class="mb-0 mt-1">{{ specialization.description }}</p>
+</div>
+<div class="mt-4 text-center">
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-dark rounded-5 px-5">Back</a>
+    {% if request.user.is_staff %}
+        <a href="{% url 'driver:specialization-edit' pk=specialization.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
+        <a href="{% url 'driver:specialization-delete' pk=specialization.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% endif %}
+</div>
+{% endblock %}

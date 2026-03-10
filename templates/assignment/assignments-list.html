@@ -36,10 +36,12 @@
                        {% endif %}">
                             Completed Assignments
                     </a>
-                    <a href="{% url 'routes:assignment_add' %}"
-                    class="btn btn-success border-warning-subtle rounded-5 px-4">
-                        Add Assignment
-                    </a>
+                    {% if request.user.is_staff %}
+                        <a href="{% url 'routes:assignment_add' %}"
+                        class="btn btn-success border-warning-subtle rounded-5 px-4">
+                            Add Assignment
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

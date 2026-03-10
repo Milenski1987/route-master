@@ -16,9 +16,11 @@
                 </form>
             </div>
         <div class="text-center mb-1">
-            <a href="{% url 'routes:delivery_point_add' %}" class="btn btn-success border-warning-subtle rounded-5 px-5 mt-5">
-                Add Delivery Point
-            </a>
+            {% if request.user.is_staff %}
+                <a href="{% url 'routes:delivery_point_add' %}" class="btn btn-success border-warning-subtle rounded-5 px-5 mt-5">
+                    Add Delivery Point
+                </a>
+            {% endif %}
         </div>
         </div>
         {% if delivery_points %}

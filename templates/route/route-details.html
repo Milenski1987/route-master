@@ -30,7 +30,9 @@
 </div>
 <div class="mt-4 text-center">
     <a href="{% url 'routes:routes_list' %}" class="btn btn-dark rounded-5 px-5">Back</a>
-    <a href="{% url 'routes:route_edit' pk=route.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
-    <a href="{% url 'routes:route_delete' pk=route.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% if request.user.is_staff %}
+        <a href="{% url 'routes:route_edit' pk=route.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
+        <a href="{% url 'routes:route_delete' pk=route.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% endif %}
 </div>
 {% endblock %}

@@ -33,8 +33,9 @@
 <div class="mb-3 p-3 bg-white rounded-4">
     <strong>Specializations:</strong>
     <ul class="mb-0 mt-1 ps-4">
-        {% for skill in driver.specializations.all %}
-            <li>{{ skill.name }}</li>
+        {% for specialization in driver.specializations.all %}
+            <li>{{ specialization.name }}</li>
+            <a href="{% url 'driver:specialization-details' pk=specialization.id %}" class="btn btn-success rounded-5 px-5">Details</a>
         {% empty %}
             <li>No specializations.</li>
         {% endfor %}
@@ -42,7 +43,9 @@
 </div>
 <div class="mt-4 text-center">
     <a href="{% url 'driver:list' %}" class="btn btn-dark rounded-5 px-5">Back</a>
-    <a href="{% url 'driver:edit' pk=driver.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
-    <a href="{% url 'driver:delete' pk=driver.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% if request.user.is_staff %}
+        <a href="{% url 'driver:edit' pk=driver.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
+        <a href="{% url 'driver:delete' pk=driver.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% endif %}
 </div>
 {% endblock %}

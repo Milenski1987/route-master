@@ -6,9 +6,14 @@
     {% include 'common/filter.html' %}
     <div class="container">
         <div class="text-center mb-3">
-            <a href="{% url 'driver:add' %}" class="btn btn-success border-warning-subtle rounded-5 px-5 mt-1">
-                Add Driver
-            </a>
+            {% if request.user.is_staff %}
+                <a href="{% url 'driver:add' %}" class="btn btn-success border-warning-subtle rounded-5 px-5 mt-1">
+                    Add Driver
+                </a>
+                <a href="{% url 'driver:specializations-list' %}" class="btn btn-success border-warning-subtle rounded-5 px-5 mt-1">
+                    Manage Driver Specializations
+                </a>
+            {% endif %}
         </div>
         {% if drivers %}
             <div class="row g-4">

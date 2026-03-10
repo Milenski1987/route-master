@@ -24,7 +24,9 @@
 </div>
 <div class="mt-4 text-center">
     <a href="{% url 'routes:delivery_points_list' %}" class="btn btn-dark rounded-5 px-5">Back</a>
-    <a href="{% url 'routes:delivery_point_edit' pk=delivery_point.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
-    <a href="{% url 'routes:delivery_point_delete' pk=delivery_point.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% if request.user.is_staff %}
+        <a href="{% url 'routes:delivery_point_edit' pk=delivery_point.id %}" class="btn btn-success rounded-5 px-5">Edit</a>
+        <a href="{% url 'routes:delivery_point_delete' pk=delivery_point.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
+    {% endif %}
 </div>
 {% endblock %}

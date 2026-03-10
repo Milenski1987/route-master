@@ -9,3 +9,13 @@ class DriverContextMixin:
         context['back_url'] = 'driver:list'
 
         return context
+
+
+class SpecializationContextMixin:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Specialization'
+        context['icon'] = 'images/specialization_icon.png'
+        context['back_url'] = 'driver:specializations-list'
+
+        return context

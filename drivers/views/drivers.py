@@ -1,6 +1,8 @@
 from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import QuerySet, ProtectedError
+from django.shortcuts import redirect
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, CreateView, UpdateView, DeleteView
 from common.mixins import ModifyFormData
@@ -79,3 +81,14 @@ class DriverDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DriverContex
         context['form'] = DriverDeleteForm(instance=self.object)
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            return super().post(request, *args, **kwargs)
+
+        except ProtectedError:
+            messages.error(request,"Unable to delete: Driver has active assignments.")
+
+            return redirect('driver:delete', pk=self.object.pk)

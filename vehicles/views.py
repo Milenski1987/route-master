@@ -1,10 +1,11 @@
 from typing import Any, Dict
-
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import QuerySet, ProtectedError
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, UpdateView, CreateView, DeleteView
 from common.mixins import ModifyFormData
+from django.contrib import messages
 from vehicles.forms import VehicleSearchAndSortForm, VehicleEditForm, VehicleAddForm, VehicleDeleteForm
 from vehicles.mixins import VehicleContextMixin
 from vehicles.models import Vehicle
@@ -78,3 +79,14 @@ class VehicleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, VehicleCont
         context['form'] = VehicleDeleteForm(instance=self.object)
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            return super().post(request, *args, **kwargs)
+
+        except ProtectedError:
+            messages.error(request,"Unable to delete: Vehicle has active assignments.")
+
+            return redirect('vehicle:delete', pk=self.object.pk)

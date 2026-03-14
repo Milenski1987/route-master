@@ -14,13 +14,13 @@ def driver_years_validator(value: int) -> None:
     if age < 18:
         raise ValidationError("Driver must be at least 18 years old!")
 
+
 @deconstructible
 class PhoneNumberValidator:
     def __init__(self, length: int, length_message: str, contain_message: str) -> None:
         self.length = length
         self.length_message = length_message
         self.contain_message = contain_message
-
 
     def __call__(self, value: str) -> None:
         if len(value) != self.length:

@@ -34,8 +34,10 @@
     <strong>Specializations:</strong>
     <ul class="mb-0 mt-1 ps-4">
         {% for specialization in driver.specializations.all %}
-            <li>{{ specialization.name }}</li>
-            <a href="{% url 'driver:specialization-details' pk=specialization.id %}" class="btn btn-success rounded-5 px-5">Details</a>
+            <li class="d-flex align-items-center justify-content-between me-3 mb-1">
+                <span>{{ specialization.name }}</span>
+                <a href="{% url 'driver:specialization-details' pk=specialization.id %}" class="btn btn-success btn-sm rounded-5 px-3">Details</a>
+            </li>
         {% empty %}
             <li>No specializations.</li>
         {% endfor %}

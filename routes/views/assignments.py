@@ -1,5 +1,4 @@
 from typing import Any, Dict
-
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q, QuerySet
 from django.urls import reverse, reverse_lazy
@@ -8,7 +7,7 @@ from django.views.generic import ListView, FormView, DetailView, CreateView, Upd
 from common.forms import SearchForm
 from common.mixins import ModifyFormData
 from routes.forms.assignments import AssignmentDeleteForm, AssignmentAddForm, AssignmentEditForm
-from routes.mixins import AssignmentContextMixin, DeliveryPointContextMixin
+from routes.mixins import AssignmentContextMixin
 from routes.models import Assignment
 
 
@@ -37,9 +36,12 @@ class AssignmentListView(LoginRequiredMixin, AssignmentContextMixin, ModifyFormD
 
         if search_by:
             queryset = queryset.filter(
-                Q(route__name__icontains=search_by) |
-                Q(route__points_for_delivery__name__icontains=search_by) |
-                Q(driver__full_name__icontains=search_by) |
+                Q(route__name__icontains=search_by)
+                |
+                Q(route__points_for_delivery__name__icontains=search_by)
+                |
+                Q(driver__full_name__icontains=search_by)
+                |
                 Q(vehicle__make__icontains=search_by)
             )
 

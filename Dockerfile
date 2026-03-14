@@ -16,4 +16,4 @@ COPY . .
 # Expose port for internal container use
 EXPOSE 8000
 # Gunicorn command
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "logisticsDeliveryPlanner.wsgi:application"]

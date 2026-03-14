@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    container_name: routeMaster_web
+    restart: always
+    command: gunicorn logisticsDeliveryPlanner.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    depends_on:
+      - db
+    environment:
+      - DEBUG=0
+      - DATABASE_URL=postgres://postgres:admin@db:5432/logistics_planner
+
+  db:
+    image: postgres:16
+    container_name: routeMaster_db
+    restart: always
+    environment:
+      POSTGRES_DB: logistics_planner
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  nginx:
+    image: nginx:latest
+    container_name: routeMaster_nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/app/staticfiles
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:

@@ -1,7 +1,5 @@
 from datetime import timedelta
 from math import ceil
-from time import strftime
-
 from django import template
 from routes.models import Assignment
 

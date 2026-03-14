@@ -1,5 +1,4 @@
 from typing import Dict, Any
-
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q, QuerySet
 from django.urls import reverse, reverse_lazy

@@ -57,13 +57,13 @@ class SpecializationUpdateView(LoginRequiredMixin,PermissionRequiredMixin ,Speci
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['back_url'] = 'driver:specialization-details'
-        context['id'] = self.get_object().pk
+        context['back_url'] = 'driver:specializations-list'
 
         return context
 
     def get_success_url(self) -> str:
-        return reverse('driver:specialization-details', kwargs={'pk': self.object.pk})
+        back = self.request.GET.get('back', '/')
+        return reverse('driver:specialization-details', kwargs={'pk': self.object.pk}) + f'?back={back}'
 
 
 class SpecializationDeleteView(LoginRequiredMixin, PermissionRequiredMixin, SpecializationContextMixin, DeleteView):
@@ -74,8 +74,7 @@ class SpecializationDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Spec
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['back_url'] = 'driver:specialization-details'
-        context['id'] = self.get_object().pk
+        context['back_url'] = 'driver:specializations-list'
         context['form'] = SpecializationDeleteForm(instance=self.object)
 
         return context

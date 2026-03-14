@@ -3,7 +3,7 @@ from django.db.models.aggregates import Count
 from django.utils.timezone import now
 from django.views.generic import TemplateView
 from drivers.models import Driver
-from routes.models import Route, Assignment
+from routes.models import Assignment
 from vehicles.models import Vehicle
 
 

@@ -1,7 +1,11 @@
+from typing import Any
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView
+from typing_extensions import Dict
+
 from accounts.forms import RouteMasterRegisterForm, UserThemeForm
 from accounts.models import RouteMasterUserSettings
 
@@ -16,6 +20,12 @@ class UserRegisterView(CreateView):
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = UserModel
     template_name = 'account/profile.html'
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['theme'] = self.request.user.settings.theme
+
+        return context
 
 class UserSettingsView(LoginRequiredMixin, UpdateView):
     model = RouteMasterUserSettings  # not UserModel

@@ -2,30 +2,51 @@
 {% load static %}
 
 {% block detail_image %}
-<img src="{% if vehicle.photo %}{{ vehicle.photo }}{% else %}{% static 'images/vehicle_icon.png' %}{% endif %}"
-     alt="{{ vehicle.make }}"
-     class="img-fluid rounded-circle shadow"
-     style="max-width: 200px; height: 200px; object-fit: cover;">
+    {% if theme == 'dark' %}
+        <img src={% if vehicle.photo %}
+                "{{ vehicle.photo }}"
+                alt="Vehicle"
+                class="img-fluid rounded-circle shadow"
+                style="max-width: 200px; height: 200px; object-fit: cover;">
+            {% else %}
+                "{% static 'images/vehicle_icon.png' %}"
+                alt={{ title|capfirst }}""
+                class="img-fluid"
+                style="filter: brightness(0) invert(1); max-width: 200px;">
+            {% endif %}
+    {% else %}
+        <img src={% if vehicle.photo %}
+                "{{ vehicle.photo }}"
+                alt="Vehicle"
+                class="img-fluid rounded-circle shadow"
+                style="max-width: 200px; height: 200px; object-fit: cover;">
+            {% else %}
+                "{% static 'images/vehicle_icon.png' %}"
+                alt={{ title|capfirst }}""
+                class="img-fluid"
+                style="max-width: 200px;">
+            {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block logic %}
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Make:</strong>
     <p class="mb-0 mt-1">{{ vehicle.make|upper }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Model:</strong>
     <p class="mb-0 mt-1">{{ vehicle.model }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Registration number:</strong>
     <p class="mb-0 mt-1">{{ vehicle.registration_number }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Vehicle type:</strong>
     <p class="mb-0 mt-1">{{ vehicle.vehicle_type }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Capacity:</strong>
     <p class="mb-0 mt-1">{{ vehicle.capacity_kg }}kg</p>
 </div>

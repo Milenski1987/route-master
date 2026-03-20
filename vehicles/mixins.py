@@ -7,5 +7,6 @@ class VehicleContextMixin:
         context['title'] = 'Vehicle'
         context['icon'] = 'images/vehicle_icon.png'
         context['back_url'] = 'vehicle:list'
+        context['theme'] = self.request.user.settings.theme
 
         return context

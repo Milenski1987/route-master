@@ -3,34 +3,55 @@
 {% load static %}
 
 {% block detail_image %}
-<img src="{% if driver.photo %}{{ driver.photo }}{% else %}{% static 'images/driver_icon.png' %}{% endif %}"
-     alt="{{ driver.full_name }}"
-     class="img-fluid rounded-circle shadow"
-     style="max-width: 200px; height: 200px; object-fit: cover;">
+    {% if theme == 'dark' %}
+        <img src={% if driver.photo %}
+                "{{ driver.photo }}"
+                alt="Driver"
+                class="img-fluid rounded-circle shadow"
+                style="max-width: 200px; height: 200px; object-fit: cover;">
+            {% else %}
+                "{% static 'images/driver_icon.png' %}"
+                alt={{ title|capfirst }}""
+                class="img-fluid"
+                style="filter: brightness(0) invert(1); max-width: 200px;">
+            {% endif %}
+    {% else %}
+        <img src={% if driver.photo %}
+                "{{ driver.photo }}"
+                alt="Driver"
+                class="img-fluid rounded-circle shadow"
+                style="max-width: 200px; height: 200px; object-fit: cover;">
+            {% else %}
+                "{% static 'images/driver_icon.png' %}"
+                alt={{ title|capfirst }}""
+                class="img-fluid"
+                style="max-width: 200px;">
+            {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block logic %}
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Name:</strong>
     <p class="mb-0 mt-1">{{ driver.full_name }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Date of birth:</strong>
     <p class="mb-0 mt-1">{{ driver.date_of_birth|date_convert }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>License number:</strong>
     <p class="mb-0 mt-1">{{ driver.driving_license_number }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Phone:</strong>
     <p class="mb-0 mt-1">{{ driver.phone_number }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Years of experience:</strong>
     <p class="mb-0 mt-1">{{ driver.years_of_experience }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Specializations:</strong>
     <ul class="mb-0 mt-1 ps-4">
         {% for specialization in driver.specializations.all %}

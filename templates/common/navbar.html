@@ -1,13 +1,13 @@
 {% load static %}
 
-{% if request.user.is_authenticated and request.user.settings.theme == 'Dark' %}
+{% if request.user.is_authenticated and request.user.settings.theme == 'dark' %}
     <nav class="bg-dark py-2">
 {% else %}
     <nav class="bg-success py-2">
 {% endif %}
     <div class="position-relative d-flex align-items-center justify-content-center px-3">
         <div class="d-flex align-items-center flex-nowrap position-absolute start-0 ps-3">
-            {% if  request.user.is_authenticated and request.user.settings.theme == 'Dark'%}
+            {% if  request.user.is_authenticated and request.user.settings.theme == 'dark'%}
                 <a href="{% url 'common:home' %}" class="nav-link text-light fs-3" style="font-family: 'Audiowide', sans-serif;">
                     <img width="55" src="{% static 'images/logo.svg' %}" style="filter: brightness(0) invert(1)" alt="Home">  RouteMaster
                 </a>
@@ -48,7 +48,11 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'accounts:profile' request.user.pk %}">
-                                <img width="25" src="{% static 'images/profile_icon.png' %}" alt="Profile"/>
+                                {% if request.user.settings.theme == 'dark'%}
+                                    <img width="25" src="{% static 'images/profile_icon.png' %}" style="filter: brightness(0) invert(1)" alt="Profile"/>
+                                {% else %}
+                                    <img width="25" src="{% static 'images/profile_icon.png' %}" alt="Profile"/>
+                                {% endif %}
                                 <b>Profile</b>
                             </a>
                         </li>
@@ -57,7 +61,11 @@
                             <form method="post" action="{% url 'accounts:logout' %}">
                                 {% csrf_token %}
                                 <button type="submit" class="dropdown-item d-flex align-items-center gap-2 bg-transparent border-0">
-                                    <img width="25" src="{% static 'images/logout_icon.png' %}" alt="Logout"/>
+                                    {% if request.user.settings.theme == 'dark'%}
+                                        <img width="25" src="{% static 'images/logout_icon.png' %}" style="filter: brightness(0) invert(1)" alt="Logout"/>
+                                    {% else %}
+                                        <img width="25" src="{% static 'images/logout_icon.png' %}" alt="Logout"/>
+                                    {% endif %}
                                     <b>Logout</b>
                                 </button>
                             </form>

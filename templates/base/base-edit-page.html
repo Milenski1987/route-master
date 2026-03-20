@@ -9,6 +9,19 @@
                 <div class="bg-warning-subtle rounded-5 shadow p-4">
                     <div class="row">
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
+                            {% if theme == 'dark' %}
+                            <img src={% if object.photo %}
+                                    "{{ object.photo }}"
+                                    alt={{ title|capfirst }}""
+                                    class="img-fluid rounded-circle shadow"
+                                    style="max-width: 200px; height: 200px; object-fit: cover;">
+                                {% else %}
+                                    "{% static icon %}"
+                                    alt={{ title|capfirst }}""
+                                    class="img-fluid"
+                                    style="filter: brightness(0) invert(1); max-width: 200px;">
+                                {% endif %}
+                        {% else %}
                             <img src={% if object.photo %}
                                     "{{ object.photo }}"
                                     alt={{ title|capfirst }}""
@@ -20,13 +33,14 @@
                                     class="img-fluid"
                                     style="max-width: 200px;">
                                 {% endif %}
+                        {% endif %}
                         </div>
                         <div class="col-md-8">
                             <h2 class="mb-4 text-center">Edit {{ title|capfirst }}</h2>
                             <form method="POST">
                                 {% csrf_token %}
                                 {% for field in form %}
-                                    <div class="mb-3 p-3 bg-white rounded-4">
+                                    <div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
                                         <strong>{{ field.label }}:</strong>
                                         {% if field.help_text %}
                                             <small class="text-muted d-block mb-1">{{ field.help_text }}</small>

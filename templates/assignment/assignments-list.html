@@ -21,7 +21,11 @@
                     <a href="?status=upcoming"
                        class="btn rounded-5 px-4
                        {% if request.GET.status != 'completed' %}
-                            bg-warning-subtle text-dark border-success
+                            {% if theme == 'dark' %}
+                                bg-dark text-white border-success
+                            {% else %}
+                                bg-warning-subtle text-dark border-success
+                            {% endif %}
                        {% else %}
                             btn-success border-warning-subtle
                        {% endif %}">
@@ -30,7 +34,11 @@
                     <a href="?status=completed"
                        class="btn rounded-5 px-4
                        {% if request.GET.status == 'completed' %}
-                            bg-warning-subtle text-dark border-success
+                            {% if theme == 'dark' %}
+                                bg-dark text-white border-success
+                            {% else %}
+                                bg-warning-subtle text-dark border-success
+                            {% endif %}
                        {% else %}
                             btn-success border-warning-subtle
                        {% endif %}">
@@ -49,9 +57,13 @@
             <div class="row g-4 justify-content-center">
                 {% for assignment in assignments %}
                     <div class="col-12 col-md-6">
-                        <div class="border rounded-5 p-3 bg-white shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+                        <div class="border rounded-5 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                             <div class="d-flex align-items-center gap-3">
-                                <img src="{% static 'images/assignment_icon.png' %}" alt="Assignment" style="width:60px; height:60px;">
+                                {% if theme == 'dark' %}
+                                    <img src="{% static 'images/assignment_icon.png' %}" alt="Assignment" class="img-fluid" style="filter: brightness(0) invert(1); max-width: 60px;">
+                                {% else %}
+                                    <img src="{% static 'images/assignment_icon.png' %}" alt="Assignment" class="img-fluid" style="max-width: 60px;">
+                                {% endif %}
                                 <div class="d-flex flex-column lh-base gap-1 text-start">
                                     <div class="fw-semibold fs-6">Assignment #{{ assignment.id }}</div>
                                     <div class="text-muted">Route: {{ assignment.route }}</div>

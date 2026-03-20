@@ -2,23 +2,23 @@
 
 
 {% block logic %}
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Name:</strong>
     <p class="mb-0 mt-1">{{ route.name|capfirst }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Start location:</strong>
     <p class="mb-0 mt-1">{{ route.start_location|capfirst }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>End location:</strong>
     <p class="mb-0 mt-1">{{ route.end_location|capfirst }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Distance:</strong>
     <p class="mb-0 mt-1">{{ route.distance_km }}km</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Points for delivery:</strong>
     <ul class="mb-0 mt-1 ps-4">
         {% for point in route.points_for_delivery.all %}

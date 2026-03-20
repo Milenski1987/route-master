@@ -5,7 +5,7 @@
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-7">
-            <div class="card bg-warning-subtle shadow border-dark border-4 rounded-4">
+            <div class="card bg-warning-subtle shadow border-dark border-4 rounded-4" data-bs-theme="{{ theme }}">
                 <div class="card-body p-4">
                     <div class="text-center mb-4">
                         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle border border-dark border-4 bg-success shadow"
@@ -33,27 +33,27 @@
                     <hr class="border-dark border-2">
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-muted small text-uppercase letter-spacing-1">Employee ID</label>
-                        <div class="form-control border-dark border-2 rounded-3 bg-white fw-bold" style="font-family: 'Audiowide', sans-serif; letter-spacing: 2px;">
+                        <div class="form-control border-dark border-2 rounded-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} fw-bold" style="font-family: 'Audiowide', sans-serif; letter-spacing: 2px;">
                             {{ user.employee_id }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold text-muted small text-uppercase">First Name</label>
-                            <div class="form-control border-dark border-2 rounded-3 bg-white">
+                            <div class="form-control border-dark border-2 rounded-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %}">
                                 {{ user.first_name }}
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold text-muted small text-uppercase">Last Name</label>
-                            <div class="form-control border-dark border-2 rounded-3 bg-white">
+                            <div class="form-control border-dark border-2 rounded-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %}">
                                 {{ user.last_name }}
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-muted small text-uppercase">Email</label>
-                        <div class="form-control border-dark border-2 rounded-3 bg-white">
+                        <div class="form-control border-dark border-2 rounded-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %}">
                             {{ user.email }}
                         </div>
                     </div>

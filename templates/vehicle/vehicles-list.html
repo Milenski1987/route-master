@@ -16,11 +16,33 @@
             <div class="row g-4">
                 {% for vehicle in vehicles %}
                     <div class="col-md-4">
-                        <div class="border rounded-5 p-3 bg-white shadow-sm d-flex justify-content-between align-items-center">
+                        <div class="border rounded-5 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} shadow-sm d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <img src="{% if vehicle.photo %}{{ vehicle.photo }}{% else %}{% static 'images/vehicle_icon.png' %}{% endif %}"
-                                     alt="Vehicle"
-                                     style="width:60px; height:60px; border-radius:50%; object-fit:cover;">
+                                {% if theme == 'dark' %}
+                                    <img src={% if vehicle.photo %}
+                                            "{{ vehicle.photo }}"
+                                            alt="Vehicle"
+                                            class="img-fluid rounded-circle shadow"
+                                            style="max-width: 60px; height: 60px; object-fit: cover;">
+                                        {% else %}
+                                            "{% static 'images/vehicle_icon.png' %}"
+                                            alt={{ title|capfirst }}""
+                                            class="img-fluid"
+                                            style="filter: brightness(0) invert(1); max-width: 60px;">
+                                        {% endif %}
+                                {% else %}
+                                    <img src={% if vehicle.photo %}
+                                            "{{ vehicle.photo }}"
+                                            alt="Vehicle"
+                                            class="img-fluid rounded-circle shadow"
+                                            style="max-width: 60px; height: 60px; object-fit: cover;">
+                                        {% else %}
+                                            "{% static 'images/vehicle_icon.png' %}"
+                                            alt={{ title|capfirst }}""
+                                            class="img-fluid"
+                                            style="max-width: 60px;">
+                                        {% endif %}
+                                {% endif %}
                             </div>
                             <div class="d-flex flex-column">
                                 <strong>{{ vehicle.make }} {{ vehicle.model }}</strong>

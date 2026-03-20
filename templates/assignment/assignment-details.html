@@ -3,27 +3,27 @@
 {% load calculate_arrival_time %}
 
 {% block logic %}
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Route:</strong>
     <p class="mb-0 mt-1">{{ assignment.route }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Driver:</strong>
     <p class="mb-0 mt-1">{{ assignment.driver.full_name }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Vehicle:</strong>
     <p class="mb-0 mt-1">{{ assignment.vehicle }}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Start Date and Time:</strong>
     <p class="mb-0 mt-1">{{ assignment.assignment_start|date_convert }}, 8:00</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Arrival Date and Time:</strong>
     <p class="mb-0 mt-1">{% calculate_eta assignment %}</p>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Points for delivery:</strong>
     <ul class="mb-0 mt-1 ps-4">
         {% for point in assignment.route.points_for_delivery.all %}
@@ -33,7 +33,7 @@
         {% endfor %}
     </ul>
 </div>
-<div class="mb-3 p-3 bg-white rounded-4">
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Notes:</strong>
     {% if  assignment.notes %}
         <p class="mb-0 mt-1">{{ assignment.notes }}</p>

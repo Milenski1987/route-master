@@ -10,7 +10,11 @@
                     <div class="row">
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
                             {% block detail_image %}
-                                <img src="{% static icon %}" alt={{ title }} class="img-fluid" style="max-width: 200px;">
+                                {% if theme == 'dark' %}
+                                <img src="{% static icon %}" alt={{ title|capfirst }} class="img-fluid" style="filter: brightness(0) invert(1); max-width: 200px;">
+                            {% else %}
+                                <img src="{% static icon %}" alt={{ title|capfirst }} class="img-fluid" style="max-width: 200px;">
+                            {% endif %}
                             {% endblock %}
                         </div>
                         <div class="col-md-8">

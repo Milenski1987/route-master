@@ -27,12 +27,14 @@
             <div class="row g-4 justify-content-center">
                 {% for point in delivery_points %}
                     <div class="col-12 col-md-6">
-                        <div class="border rounded-5 p-3 bg-white shadow-sm
+                        <div class="border rounded-5 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} shadow-sm
                                     d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                             <div class="d-flex align-items-center gap-3">
-                                <img src="{% static 'images/delivery_point_icon.png' %}"
-                                     alt="Delivery Point"
-                                     style="width:60px; height:60px;">
+                                {% if theme == 'dark' %}
+                                    <img src="{% static 'images/delivery_point_icon.png' %}" alt="Delivery point" class="img-fluid" style="filter: brightness(0) invert(1); max-width: 60px;">
+                                {% else %}
+                                    <img src="{% static 'images/delivery_point_icon.png' %}" alt="Delivery point" class="img-fluid" style="max-width: 60px;">
+                                {% endif %}
                                 <div class="d-flex flex-column lh-base gap-1 text-start">
                                     <div class="fw-semibold fs-6">{{ point.name|capfirst }}</div>
                                     <div class="text-muted">City: {{ point.city }}</div>

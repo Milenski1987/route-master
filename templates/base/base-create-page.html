@@ -9,14 +9,18 @@
                 <div class="bg-warning-subtle rounded-5 shadow p-4">
                     <div class="row">
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
-                            <img src="{% static icon %}" alt={{ title|capfirst }} class="img-fluid" style="max-width: 200px;">
+                            {% if theme == 'dark' %}
+                                <img src="{% static icon %}" alt={{ title|capfirst }} class="img-fluid" style="filter: brightness(0) invert(1); max-width: 200px;">
+                            {% else %}
+                                <img src="{% static icon %}" alt={{ title|capfirst }} class="img-fluid" style="max-width: 200px;">
+                            {% endif %}
                         </div>
                         <div class="col-md-8">
                             <h2 class="mb-4 text-center">Add New {{ title|capfirst }}</h2>
                             <form method="POST">
                                 {% csrf_token %}
                                 {% for field in form %}
-                                    <div class="mb-3 p-3 bg-white rounded-4">
+                                    <div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
                                         <strong>{{ field.label }}:</strong>
                                         {% if field.help_text %}
                                             <small class="text-dark d-block mb-1">{{ field.help_text }}</small>

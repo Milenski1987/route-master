@@ -7,6 +7,7 @@ class DriverContextMixin:
         context['title'] = 'Driver'
         context['icon'] = 'images/driver_icon.png'
         context['back_url'] = 'driver:list'
+        context['theme'] = self.request.user.settings.theme
 
         return context
 
@@ -17,5 +18,7 @@ class SpecializationContextMixin:
         context['title'] = 'Specialization'
         context['icon'] = 'images/specialization_icon.png'
         context['back_url'] = 'driver:specializations-list'
+        context['theme'] = self.request.user.settings.theme
+
 
         return context

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework'
 ] + PROJECT_APPS
 
 MIDDLEWARE = [
@@ -91,8 +92,8 @@ DATABASES = {
         "NAME": os.getenv('DB_NAME'),
         "USER": os.getenv('DB_USER'),
         "PASSWORD": os.getenv('DB_PASSWORD'),
-        "HOST": os.getenv('DB_HOST'),
-        "PORT": os.getenv('DB_PORT'),
+        "HOST": os.getenv('DB_HOST', default='127.0.0.1'),
+        "PORT": os.getenv('DB_PORT', default='5432'),
     }
 }
 

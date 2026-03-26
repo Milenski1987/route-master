@@ -38,6 +38,12 @@
                 <a class="nav-link text-light fs-5" href="{% url 'routes:assignment_list' %}">
                     <img width="35" class='me-1' src="{% static 'images/assignment_icon.png' %}" style="filter: brightness(0) invert(1)"  alt="Assignment"/><b>Assignments</b></a>
             </li>
+            {% if request.user.is_superuser %}
+                <li class="nav-item">
+                <a class="nav-link text-light fs-5" href="{% url 'accounts:users-api' %}">
+                    <img width="35" class='me-1' src="{% static 'images/user_icon.png' %}" style="filter: brightness(0) invert(1)"  alt="Users"/><b>Users</b></a>
+                </li>
+            {% endif %}
         </ul>
         <div class="position-absolute end-0 pe-3 d-flex align-items-center gap-2">
             {% if request.user.is_authenticated %}

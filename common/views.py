@@ -40,3 +40,5 @@ class LoggedHomePageView(TemplateView):
 
 
         return context
+
+

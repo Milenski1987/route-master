@@ -4,10 +4,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser
 from typing_extensions import Dict
 
 from accounts.forms import RouteMasterRegisterForm, UserThemeForm
-from accounts.models import RouteMasterUserSettings
+from accounts.models import RouteMasterUserSettings, RouteMasterUser
+from accounts.serializers import AdminDashboardSerializer
 
 UserModel = get_user_model()
 class UserRegisterView(CreateView):
@@ -37,3 +40,9 @@ class UserSettingsView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('accounts:settings', kwargs={'pk': self.request.user.pk})
+
+
+class AdminDashboardAPIView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = RouteMasterUser.objects.all()
+    serializer_class = AdminDashboardSerializer

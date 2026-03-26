@@ -1,16 +1,6 @@
 from django.apps import AppConfig
 
 
-class AccountsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'accounts'
-
-    def ready(self):
-        import accounts.signals
-        from django.db.models.signals import post_migrate
-        post_migrate.connect(create_groups_and_permissions, sender=self)
-
-
 def create_groups_and_permissions(sender, **kwargs):
     from django.contrib.auth.models import Group, Permission
 
@@ -40,4 +30,14 @@ def create_groups_and_permissions(sender, **kwargs):
 
     manager_group.permissions.set(manager_perms)
     driver_group.permissions.set(driver_perms)
+
+
+class AccountsConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'accounts'
+
+    def ready(self):
+        import accounts.signals
+        from django.db.models.signals import post_migrate
+        post_migrate.connect(create_groups_and_permissions, sender=self)
 

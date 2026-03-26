@@ -195,6 +195,10 @@ python manage.py migrate
 
 Demo users created via migration:
 
+Superuser<br>
+employee_id: 000000<br>
+password: admin123
+
 Manager<br>
 employee_id: 000001<br>
 password: manager123

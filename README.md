@@ -4,8 +4,11 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791?logo=postgresql)
 ![WhiteNoise](https://img.shields.io/badge/Static-WhiteNoise-lightgrey)
+![AWS](https://img.shields.io/badge/Deployed-AWS-orange?logo=amazon-aws)
 
 **RouteMaster** is a Django-based web application for managing logistics operations — all from a single, easy-to-use interface.
+
+🌐 **Live Demo**: [http://13.63.13.75](http://13.63.13.75)
 
 ---
 
@@ -14,6 +17,8 @@
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [Apps & System Overview](#-apps-and-system-overview)
+- [User Roles & Permissions](#-user-roles--permissions)
+- [REST API](#-rest-api)
 - [Screenshots](#-screenshots)
 - [Dependencies](#-dependencies)
 - [Project Structure](#-project-structure)
@@ -27,10 +32,14 @@
 
 ## ✨ Features
 
-- **Driver Management** – Manages driver profiles
+- **Driver Management** – Manages drivers and driver specializations
 - **Vehicle Management** – Manages a fleet of vehicles
 - **Route Planning** – Define and manage routes, delivery points and assignments
 - **Admin Panel** – Manage all data through Django's built-in admin interface
+- **User Authentication** – Register, login, and logout functionality
+- **Role-Based Permissions** – Different access levels based on user group
+- **REST API** – Admin-only endpoint built with Django REST Framework
+- **Dark Mode** – Registered users can toggle between light and dark theme, with their preference saved to their profile
 
 ---
 
@@ -55,7 +64,55 @@ The core of the application. Allows planners to create, update and delete Delive
 - Each **Route** consists of multiple **Delivery Points**
 - **Assignments** link Drivers and Vehicles to specific Routes
 - The system ensures organized planning and execution of deliveries
-  
+
+---
+
+
+## 👥 User Roles & Permissions
+
+The application supports user registration, login, and logout. Once registered, users are assigned to a group that determines their access level.
+
+| Action | Anonymous | Registered (no group) | Drivers group | Managers group |
+|---|---|---|---|---|
+| View public pages | ✅ | ✅ | ✅ | ✅ |
+| Register / Login | ✅ | — | — | — |
+| View lists | ❌ | ✅ | ✅ | ✅ |
+| View details | ❌ | ❌ | ✅ | ✅ |
+| Create / Edit / Delete | ❌ | ❌ | ❌ | ✅ |
+
+---
+
+## 🔌 REST API
+
+RouteMaster includes a RESTful API endpoint built with **Django REST Framework**.
+
+### Endpoint
+
+| Method | URL | Description | Permission |
+|---|---|---|---|
+| GET | `/accounts/api/users/` | Returns a list of all registered users | Admin only |
+
+### Example Response
+
+```json
+[
+    {
+        "employee_id": "000001",
+        "first_name": "Manager",
+        "last_name": "One",
+        "email": "manager@routemaster.com"
+    },
+    {
+        "employee_id": "000002",
+        "first_name": "Driver",
+        "last_name": "One",
+        "email": "driver@routemaster.com"
+    }
+]
+```
+
+> 🔒 This endpoint requires the requesting user to be a Django superuser (`IsAdminUser` permission).
+
 ---
 
 ## 📸 Screenshots
@@ -80,12 +137,14 @@ The core of the application. Allows planners to create, update and delete Delive
 
 ## 🛠 Tech Stack
 
-| Layer      | Technology                          |
+| Layer | Technology |
 |------------|-------------------------------------|
-| Backend    | Python / Django                     |
-| Frontend   | HTML / Django Templates / Bootstrap |
-| Database   | PostgreSQL                          |
-| Static Files | Whitenoise                          |
+| Backend | Python / Django |
+| REST API | Django REST Framework |
+| Frontend | HTML / Django Templates / Bootstrap |
+| Database | PostgreSQL |
+| Static Files | Whitenoise |
+| Deployment | AWS EC2 |
 
 ---
 
@@ -116,6 +175,7 @@ All dependencies are listed in `requirements.txt`. Here's what each one does:
 | Package | Version | Description |
 |---|---|---|
 | `Django` | 6.0.1 | The core web framework powering the entire application |
+| `djangorestframework` | 3.17.1 | Toolkit for building RESTful APIs with Django — used for the admin users endpoint |
 | `asgiref` | 3.11.0 | ASGI compatibility layer required by Django for async support |
 | `psycopg2-binary` | 2.9.11 | PostgreSQL database adapter for Python — connects Django to your Postgres database |
 | `python-dotenv` | 1.2.1 | Loads environment variables from the `.env` file into the app at runtime |
@@ -169,15 +229,17 @@ cp .env-example .env
 
 Then fill in your values:
 
-| Variable | Example Value | Description                                                                                                     |
-|---|---|-----------------------------------------------------------------------------------------------------------------|
+| Variable | Example Value | Description                                                                                                 |
+|---|---|-------------------------------------------------------------------------------------------------------------|
 | `SECRET_KEY` | `django-insecure-xxxx...` | Django's secret key used for cryptographic signing. Generate a new one for production — never share it publicly |
-| `DEBUG` | `True` | Controls debug mode — set to `False` in production                                                              |
-| `DB_NAME` | `routemaster` | Name of your PostgreSQL database                                                                                |
-| `DB_USER` | `routemaster_user` | PostgreSQL username with access to the database                                                                 |
-| `DB_PASSWORD` | `your_password` | Password for the PostgreSQL user                                                                                |
-| `DB_HOST` | `127.0.0.1` | Database host — use `127.0.0.1` for local development                                                           |
-| `DB_PORT` | `5432` | Database port — `5432` is the PostgreSQL default                                                                |
+| `DEBUG` | `True` | Controls debug mode — set to `False` in production                                                          |
+| `DB_NAME` | `routemaster` | Name of your PostgreSQL database                                                                            |
+| `DB_USER` | `routemaster_user` | PostgreSQL username with access to the database                                                             |
+| `DB_PASSWORD` | `your_password` | Password for the PostgreSQL user                                                                            |
+| `DB_HOST` | `127.0.0.1` | Database host — use `127.0.0.1` for local development                                                       |
+| `DB_PORT` | `5432` | Database port — `5432` is the PostgreSQL default
+| `ALLOWED_HOSTS` | `127.0.0.1,localhost` | Comma-separated list of allowed hosts — add your server IP or domain in production |
+| `CSRF_TRUSTED_ORIGINS` | `http://127.0.0.1,http://localhost` | Trusted origins for CSRF protection — add your server URL in production ||
 
 
 > 💡 To generate a secure `SECRET_KEY` for production, run:

@@ -8,7 +8,23 @@
 
 **RouteMaster** is a Django-based web application for managing logistics operations — all from a single, easy-to-use interface.
 
+---
+
 🌐 **Live Demo**: [http://13.63.13.75](http://13.63.13.75)
+
+Demo users:
+
+Superuser
+employee_id: 000000
+password: admin123
+
+Manager
+employee_id: 000001
+password: manager123
+
+Driver
+employee_id: 000002
+password: driver123
 
 ---
 

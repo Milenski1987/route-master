@@ -35,11 +35,26 @@
 </div>
 <div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
     <strong>Notes:</strong>
-    {% if  assignment.notes %}
+    {% if assignment.notes %}
         <p class="mb-0 mt-1">{{ assignment.notes }}</p>
     {% else %}
         <p class="mb-0 mt-1">No notes for this assignment.</p>
     {% endif %}
+</div>
+<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
+    <strong>Document:</strong>
+    <div class="mt-2">
+        {% if assignment.document %}
+            <a href="{% url 'routes:assignment_document' pk=assignment.document.id %}"
+               class="btn btn-info rounded-5 px-5">Show Document</a>
+        {% else %}
+            <button id="generateBtn"
+                    class="btn btn-primary rounded-5 px-5"
+                    onclick="generateDocument({{ assignment.id }})">
+                Generate Document
+            </button>
+        {% endif %}
+    </div>
 </div>
 <div class="mt-4 text-center">
     <a href="{% url 'routes:assignment_list' %}" class="btn btn-dark rounded-5 px-5">Back</a>
@@ -48,4 +63,28 @@
         <a href="{% url 'routes:assignment_delete' pk=assignment.id %}" class="btn btn-danger rounded-5 px-5">Delete</a>
     {% endif %}
 </div>
+
+<script>
+function generateDocument(assignmentId) {
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Processing...';
+
+    fetch(`/routes/assignment/${assignmentId}/api/generate-document/`, {
+        method: 'POST',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+    });
+
+    const interval = setInterval(function() {
+        fetch(`/routes/assignment/${assignmentId}/api/generate-document/`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'Created') {
+                    clearInterval(interval);
+                    location.reload();
+                }
+            });
+    }, 3000);
+}
+</script>
 {% endblock %}

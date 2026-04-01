@@ -32,3 +32,14 @@ class AssignmentContextMixin:
         context['theme'] = self.request.user.settings.theme
 
         return context
+
+
+class AssignmentDocumentContextMixin:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Assignment Document'
+        context['icon'] = 'images/assignment_icon.png'
+        context['back_url'] = 'routes:assignment_details'
+        context['theme'] = self.request.user.settings.theme
+
+        return context

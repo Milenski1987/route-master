@@ -1,14 +1,21 @@
+import asyncio
+import threading
 from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q, QuerySet
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
 from django.views.generic import ListView, FormView, DetailView, CreateView, UpdateView, DeleteView
+from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from common.forms import SearchForm
 from common.mixins import ModifyFormData
 from routes.forms.assignments import AssignmentDeleteForm, AssignmentAddForm, AssignmentEditForm
-from routes.mixins import AssignmentContextMixin
-from routes.models import Assignment
+from routes.mixins import AssignmentContextMixin, AssignmentDocumentContextMixin
+from routes.models import Assignment, AssignmentDocument
+from routes.tasks import generate_assignment_document
 
 
 class AssignmentListView(LoginRequiredMixin, AssignmentContextMixin, ModifyFormData, ListView, FormView):
@@ -77,6 +84,11 @@ class AssignmentUpdateView(LoginRequiredMixin, PermissionRequiredMixin ,Assignme
 
         return context
 
+    def form_valid(self, response):
+        if hasattr(self.object, 'document'):
+            self.object.document.delete()
+        return super().form_valid(response)
+
     def get_success_url(self) -> str:
         return reverse('routes:assignment_details', kwargs={'pk': self.object.pk})
 
@@ -94,6 +106,48 @@ class AssignmentDeleteView(LoginRequiredMixin, PermissionRequiredMixin ,Assignme
         context['form'] = AssignmentDeleteForm(instance=self.object)
 
         return context
+
+
+class AssignmentGenerateDocumentView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, pk):
+        assignment = get_object_or_404(Assignment, pk=pk)
+
+        if hasattr(assignment, 'document'):
+            return Response({'status': 'Document exists'})
+
+        thread = threading.Thread(
+            target=asyncio.run,
+            args=(generate_assignment_document(pk),)
+        )
+        thread.start()
+
+        return Response({'status': 'Processing...'})
+
+
+    def get(self, request, pk):
+        assignment = get_object_or_404(Assignment, pk=pk)
+
+        status = 'Created' if hasattr(assignment, 'document') else 'Not Created'
+        return Response({'status': status})
+
+
+class AssignmentShowDocumentView(LoginRequiredMixin, PermissionRequiredMixin,AssignmentDocumentContextMixin, DetailView):
+    permission_required = 'routes.view_assignment'
+    queryset = AssignmentDocument.objects.select_related(
+        'assignment',
+        'assignment__driver',
+        'assignment__vehicle',
+        'assignment__route'
+    ).prefetch_related(
+        'assignment__route__points_for_delivery'
+    )
+    template_name = 'assignment/assignment-document.html'
+
+
+
+
 
 
 

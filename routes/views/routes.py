@@ -42,7 +42,6 @@ class RouteDetailsView(LoginRequiredMixin, PermissionRequiredMixin ,RouteContext
     template_name = 'route/route-details.html'
 
 
-
 class RouteCreateView(LoginRequiredMixin,PermissionRequiredMixin ,RouteContextMixin, CreateView):
     permission_required = 'routes.add_route'
     queryset = Route.objects.prefetch_related('points_for_delivery')

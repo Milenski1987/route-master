@@ -1,0 +1,91 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load date_convert_filter %}
+
+{% block content %}
+<div class="flex-fill py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="{% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-5 shadow p-5">
+                    <div class="text-center border-bottom pb-4 mb-4">
+                        <img src="{% static 'images/assignment_icon.png' %}" alt="Document" style="max-width: 60px;" class="mb-3">
+                        <h2 class="fw-bold text-uppercase tracking-wide">Assignment Document</h2>
+                        <h4 class="text-muted">{{ object }}</h4>
+                        <small class="text-muted">Generated: {{ object.created_at|date:"d M Y, H:i" }}</small>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3">
+                            🧑‍✈️ Driver
+                        </h5>
+                        <div class="row">
+                            <div class="col-sm-5 text-muted">Full Name:</div>
+                            <div class="col-sm-7 fw-semibold">{{ object.assignment.driver.full_name }}</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3">
+                            🚚 Vehicle
+                        </h5>
+                        <div class="row">
+                            <div class="col-sm-5 text-muted">Registration Number:</div>
+                            <div class="col-sm-7 fw-semibold">{{ object.assignment.vehicle.registration_number }}</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3">
+                            🗺️ Route
+                        </h5>
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">Route Name:</div>
+                            <div class="col-sm-7 fw-semibold">{{ object.assignment.route }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">Start Location:</div>
+                            <div class="col-sm-7 fw-semibold">{{ object.assignment.route.start_location }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">End Location:</div>
+                            <div class="col-sm-7 fw-semibold">{{ object.assignment.route.end_location }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">Distance:</div>
+                            <div class="col-sm-7 fw-semibold">{{ object.assignment.route.distance_km }} km</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3">
+                            📍 Delivery Points
+                        </h5>
+                        <ul class="list-group list-group-flush">
+                            {% for point in object.assignment.route.points_for_delivery.all %}
+                                <li class="list-group-item bg-transparent">
+                                    <span class="badge bg-warning text-dark me-2">{{ forloop.counter }}</span>
+                                    {{ point.name }} — {{ point.city }}
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item bg-transparent text-muted">No delivery points.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% if object.assignment.notes %}
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3">
+                            📝 Notes
+                        </h5>
+                        <p class="mb-0">{{ object.assignment.notes }}</p>
+                    </div>
+                    {% endif %}
+                    <div class="text-center border-top pt-4 mt-4">
+                        <small class="text-muted d-block mb-3">
+                            Assignment Start: {{ object.assignment.assignment_start|date_convert }}
+                        </small>
+                        <a href="{% url 'routes:assignment_details' pk=object.assignment.pk %}"
+                           class="btn btn-dark rounded-5 px-5">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

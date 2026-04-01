@@ -10,7 +10,9 @@ assignments_urls = [
     path('<int:pk>/', include([
         path('', views.AssignmentDetailsView.as_view(), name='assignment_details'),
         path('edit/', views.AssignmentUpdateView.as_view(), name='assignment_edit'),
-        path('delete/', views.AssignmentDeleteView.as_view(), name='assignment_delete')
+        path('delete/', views.AssignmentDeleteView.as_view(), name='assignment_delete'),
+        path('api/generate-document/', views.AssignmentGenerateDocumentView.as_view(), name='generate_document'),
+        path('document/', views.AssignmentShowDocumentView.as_view(), name='assignment_document')
     ]))
 ]
 

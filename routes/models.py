@@ -75,3 +75,14 @@ class Assignment(TimeStampMixin):
         blank=True,
         null=True
     )
+
+
+class AssignmentDocument(TimeStampMixin):
+    assignment = models.OneToOneField(
+        Assignment,
+        on_delete=models.CASCADE,
+        related_name='document'
+    )
+
+    def __str__(self):
+        return f'Document #{self.id:05d}'

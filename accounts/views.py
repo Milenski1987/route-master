@@ -7,7 +7,6 @@ from django.views.generic import CreateView, TemplateView, DetailView, UpdateVie
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from typing_extensions import Dict
-
 from accounts.forms import RouteMasterRegisterForm, UserThemeForm
 from accounts.models import RouteMasterUserSettings, RouteMasterUser
 from accounts.serializers import AdminDashboardSerializer

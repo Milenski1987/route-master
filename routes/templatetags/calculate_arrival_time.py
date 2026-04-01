@@ -4,7 +4,6 @@ from django import template
 from routes.models import Assignment
 
 
-
 register = template.Library()
 
 @register.simple_tag()

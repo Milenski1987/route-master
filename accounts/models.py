@@ -2,7 +2,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.validators import MinLengthValidator
 from django.db import models
-
 from accounts.choices import UIThemeChoices
 from accounts.managers import RouteMasterUserManager
 from accounts.validators import UserEmailValidator

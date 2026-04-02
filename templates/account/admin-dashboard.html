@@ -1,0 +1,53 @@
+{% extends 'home-page.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0" id="users-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Group</th>  <!-- ADD THIS -->
+                    </tr>
+                </thead>
+                <tbody id="users-tbody">
+                    <tr>
+                        <td colspan="5" class="text-center py-4">  <!-- 5 now, not 4 -->
+                            <div class="spinner-border spinner-border-sm"></div> Loading...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadUsers() {
+    const response = await fetch('/accounts/api/users/');
+    const users = await response.json();
+    const tbody = document.getElementById('users-tbody');
+
+    if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center">No users found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = users.map(user => `
+        <tr>
+            <td><span class="badge bg-secondary">${user.employee_id}</span></td>
+            <td>${user.first_name}</td>
+            <td>${user.last_name}</td>
+            <td><a href="mailto:${user.email}">${user.email}</a></td>
+            <td>${user.user_groups.length ? user.user_groups.join(', ') : '<span class="text-muted">No group</span>'}</td>  <!-- ADD THIS -->
+        </tr>
+    `).join('');
+}
+
+loadUsers();
+</script>
+{% endblock %}

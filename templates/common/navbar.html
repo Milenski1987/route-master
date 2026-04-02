@@ -40,7 +40,7 @@
             </li>
             {% if request.user.is_superuser %}
                 <li class="nav-item">
-                <a class="nav-link text-light fs-5" href="{% url 'accounts:users-api' %}">
+                <a class="nav-link text-light fs-5" href="{% url 'accounts:admin-dashboard' %}">
                     <img width="35" class='me-1' src="{% static 'images/user_icon.png' %}" style="filter: brightness(0) invert(1)"  alt="Users"/><b>Users</b></a>
                 </li>
             {% endif %}

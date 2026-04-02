@@ -1,7 +1,6 @@
 from typing import Any
-
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView
 from rest_framework.generics import ListAPIView
@@ -10,6 +9,7 @@ from typing_extensions import Dict
 from accounts.forms import RouteMasterRegisterForm, UserThemeForm
 from accounts.models import RouteMasterUserSettings, RouteMasterUser
 from accounts.serializers import AdminDashboardSerializer
+
 
 UserModel = get_user_model()
 class UserRegisterView(CreateView):
@@ -43,5 +43,13 @@ class UserSettingsView(LoginRequiredMixin, UpdateView):
 
 class AdminDashboardAPIView(ListAPIView):
     permission_classes = [IsAdminUser]
-    queryset = RouteMasterUser.objects.all()
+    queryset = RouteMasterUser.objects.order_by('employee_id')
     serializer_class = AdminDashboardSerializer
+
+
+class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    permission_classes = [IsAdminUser]
+    template_name = 'account/admin-dashboard.html'
+
+    def test_func(self):
+        return self.request.user.is_staff

@@ -73,10 +73,12 @@
                                 </div>
                             </div>
                             <div class="ms-auto mt-2 mt-md-0">
+                                {% if perms.routes.view_assignment %}
                                 <a href="{% url 'routes:assignment_details' pk=assignment.id %}"
                                    class="btn btn-success rounded-5">
                                     Details
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -44,12 +44,14 @@
                                         {% endif %}
                                 {% endif %}
                             </div>
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column flex-grow-1 text-center">
                                 <strong>{{ vehicle.make }} {{ vehicle.model }}</strong>
                                 <small>Capacity: {{ vehicle.capacity_kg }}kg</small>
                             </div>
                             <div class="d-flex align-items-center">
+                                {% if perms.vehicles.view_vehicle %}
                                 <a href="{% url 'vehicle:details' pk=vehicle.id %}" class="btn btn-success rounded-5 me-2">Details</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

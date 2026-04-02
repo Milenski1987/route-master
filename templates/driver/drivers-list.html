@@ -48,12 +48,15 @@
                                         {% endif %}
                                 {% endif %}
                             </div>
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column flex-grow-1 text-center">
                                 <strong>{{ driver.full_name }}</strong>
                                 <small>{{ driver.years_of_experience }} years of experience</small>
                             </div>
-                            <div class="d-flex align-items-center">
+
+                            <div class="d-flex align-items-center ms-auto">
+                            {% if perms.drivers.view_driver %}
                                 <a href="{% url 'driver:details' pk=driver.id %}" class="btn btn-success rounded-5 me-2">Details</a>
+                            {% endif %}
                             </div>
                         </div>
                     </div>

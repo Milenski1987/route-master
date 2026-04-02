@@ -41,21 +41,23 @@
         <p class="mb-0 mt-1">No notes for this assignment.</p>
     {% endif %}
 </div>
-<div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
-    <strong>Document:</strong>
-    <div class="mt-2">
-        {% if assignment.document %}
-            <a href="{% url 'routes:assignment_document' pk=assignment.document.id %}"
-               class="btn btn-info rounded-5 px-5">Show Document</a>
-        {% else %}
-            <button id="generateBtn"
-                    class="btn btn-primary rounded-5 px-5"
-                    onclick="generateDocument({{ assignment.id }})">
-                Generate Document
-            </button>
-        {% endif %}
+{% if request.user.is_staff %}
+    <div class="mb-3 p-3 {% if theme == 'dark' %}bg-dark{% else %}bg-white{% endif %} rounded-4">
+        <strong>Document:</strong>
+        <div class="mt-2">
+            {% if assignment.document %}
+                <a href="{% url 'routes:assignment_document' pk=assignment.document.id %}"
+                   class="btn btn-info rounded-5 px-5">Show Document</a>
+            {% else %}
+                <button id="generateBtn"
+                        class="btn btn-primary rounded-5 px-5"
+                        onclick="generateDocument({{ assignment.id }})">
+                    Generate Document
+                </button>
+            {% endif %}
+        </div>
     </div>
-</div>
+{% endif %}
 <div class="mt-4 text-center">
     <a href="{% url 'routes:assignment_list' %}" class="btn btn-dark rounded-5 px-5">Back</a>
     {% if request.user.is_staff %}

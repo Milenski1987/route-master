@@ -6,6 +6,9 @@ from drivers.validators import driver_years_validator, PhoneNumberValidator
 
 
 class Driver(models.Model):
+    class Meta:
+        ordering = ['id']
+
     full_name = models.CharField(
         max_length= 50
     )
@@ -62,6 +65,9 @@ class Driver(models.Model):
 
 
 class Specialization(models.Model):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(
         max_length=100,
         unique=True

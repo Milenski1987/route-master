@@ -3,6 +3,9 @@ from common.mixins import TimeStampMixin
 
 
 class DeliveryPoint(models.Model):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(
         max_length=50,
         unique=True
@@ -26,6 +29,9 @@ class DeliveryPoint(models.Model):
 
 
 class Route(TimeStampMixin):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(
         max_length= 30
     )
@@ -51,6 +57,9 @@ class Route(TimeStampMixin):
 
 
 class Assignment(TimeStampMixin):
+    class Meta:
+        ordering = ['id']
+
     route = models.ForeignKey(
         'Route',
         on_delete=models.PROTECT,
@@ -78,6 +87,9 @@ class Assignment(TimeStampMixin):
 
 
 class AssignmentDocument(TimeStampMixin):
+    class Meta:
+        ordering = ['id']
+
     assignment = models.OneToOneField(
         Assignment,
         on_delete=models.CASCADE,

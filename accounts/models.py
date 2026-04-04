@@ -8,6 +8,9 @@ from accounts.validators import UserEmailValidator
 
 
 class RouteMasterUser(AbstractBaseUser, PermissionsMixin):
+    class Meta:
+        ordering = ['id']
+
     USERNAME_FIELD = 'employee_id'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
@@ -52,6 +55,9 @@ class RouteMasterUser(AbstractBaseUser, PermissionsMixin):
 
 
 class RouteMasterUserSettings(models.Model):
+    class Meta:
+        ordering = ['id']
+
     user = models.OneToOneField(
         RouteMasterUser,
         on_delete=models.CASCADE,

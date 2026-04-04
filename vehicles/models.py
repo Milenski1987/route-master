@@ -5,6 +5,9 @@ from vehicles.choices import VehicleTypeChoices
 
 
 class Vehicle(models.Model):
+    class Meta:
+        ordering = ['id']
+
     registration_number = models.CharField(
         max_length=8,
         validators=[

@@ -48,7 +48,7 @@ class DriverCreateView(LoginRequiredMixin,PermissionRequiredMixin ,DriverContext
     form_class = DriverAddForm
 
     def get_success_url(self) -> str:
-        return reverse('driver:details', kwargs={'pk': self.object.pk})
+        return reverse('driver:list', kwargs={'pk': self.object.pk})
 
 
 class DriverUpdateView(LoginRequiredMixin,PermissionRequiredMixin ,DriverContextMixin, UpdateView):

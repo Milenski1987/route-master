@@ -10,7 +10,7 @@
 
 ---
 
-🌐 **Live Demo**: [http://13.63.13.75](http://13.63.13.75)
+### 🌐 **Live Demo**: [http://13.63.13.75](http://13.63.13.75)
 
 Demo users:
 
@@ -35,6 +35,8 @@ password: driver123
 - [Apps & System Overview](#-apps-and-system-overview)
 - [User Roles & Permissions](#-user-roles--permissions)
 - [REST API](#-rest-api)
+- [Asynchronous Processing](#-asynchronous-processing)
+- [Tests](#-tests)
 - [Screenshots](#-screenshots)
 - [Dependencies](#-dependencies)
 - [Project Structure](#-project-structure)
@@ -131,23 +133,62 @@ RouteMaster includes a RESTful API endpoint built with **Django REST Framework**
 
 ---
 
+## ⚙️ Asynchronous Processing
+
+RouteMaster uses Python's built-in `asyncio` for asynchronous task processing.
+
+Each **Assignment** can have a document generated for it. When the user triggers document generation, the task runs asynchronously in the background without blocking the request.
+
+**How it works:**
+- User triggers document generation for a specific assignment
+- `generate_assignment_document()` runs asynchronously via `asyncio`
+- It waits 5 seconds (simulating background processing) then creates an `AssignmentDocument` linked to the assignment
+- The task runs in a thread executor to safely perform synchronous Django ORM operations from async context
+
+No additional infrastructure (Celery, Redis, etc.) is required — the async task runs within Django's existing process.
+
+---
+
+## 🧪 Tests
+
+The project includes 37 tests covering custom logic, views, and user-related functionality.
+
+| Area | Tests |
+|---|---|
+| User registration, login, logout | 5 |
+| Custom validators (email, photo URL, phone number, driver age) | 15 |
+| Assignment form validation (date, driver & vehicle availability) | 4 |
+| Access control (authenticated vs unauthenticated users) | 13 |
+
+To run the tests:
+```bash
+python manage.py test
+```
+
+---
+
 ## 📸 Screenshots
 
 <table> <tr> <td align="center"> 
-<img src="docs/images/HomePage.png" width="500" alt="Home Page"/><br> 
+<img src="docs/images/Home Page.png" width="500" alt="Home Page"/><br> 
 <sub>Home Page</sub> </td> <td align="center"> 
-<img src="docs/images/ListPage.png" width="500" alt="List Page"/><br> 
-<sub>List Page</sub> </td> </tr> </table>
+<img src="docs/images/User Registration.png" width="500" alt="User Registration"/><br> 
+<sub>User Registration</sub> </td> </tr> </table>
 <table> <tr> <td align="center"> 
-<img src="docs/images/DetailsPage.png" width="500" alt="Details Page"/><br> 
-<sub>Details Page</sub> </td> <td align="center"> 
-<img src="docs/images/AddPage.png" width="500" alt="Add Page"/><br> 
-<sub>Add Page</sub> </td> </tr> </table>
+<img src="docs/images/User Login.png" width="500" alt="User Login"/><br> 
+<sub>User Login</sub> </td> <td align="center"> 
+<img src="docs/images/User Settings.png" width="500" alt="User Settings"/><br> 
+<sub>User Settings</sub> </td> </tr> </table>
 <table> <tr> <td align="center"> 
-<img src="docs/images/EditPage.png" width="500" alt="Edit Page"/><br> 
-<sub>Edit Page</sub> </td> <td align="center"> 
-<img src="docs/images/DeletePage.png" width="500" alt="Delete Page"/><br> 
-<sub>Delete Page</sub> </td> </tr> </table>
+<img src="docs/images/List Page.png" width="500" alt="List Page"/><br> 
+<sub>List Page</sub> </td> <td align="center"> 
+<img src="docs/images/Details Page.png" width="500" alt="Details Page"/><br> 
+<sub>Details Page</sub> </td> </tr> </table>
+<table> <tr> <td align="center"> 
+<img src="docs/images/Assignment Document.png" width="500" alt="Assignment Document"/><br> 
+<sub>Assignment Document</sub> </td> <td align="center"> 
+<img src="docs/images/Dark Theme.png" width="500" alt="Dark Theme"/><br> 
+<sub>Dark Theme</sub> </td> </tr> </table>
 
 ---
 

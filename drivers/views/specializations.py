@@ -46,7 +46,7 @@ class SpecializationCreateView(LoginRequiredMixin,PermissionRequiredMixin ,Speci
     form_class = SpecializationAddForm
 
     def get_success_url(self) -> str:
-        return reverse('driver:specialization-details', kwargs={'pk': self.object.pk})
+        return reverse('driver:specializations-list')
 
 
 class SpecializationUpdateView(LoginRequiredMixin,PermissionRequiredMixin ,SpecializationContextMixin, UpdateView):
